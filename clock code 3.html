@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Custom Clock</title>
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+      }
+      
+      #clock {
+        font-size: 100px;
+        text-align: center;
+        margin-top: 50px;
+      }
+
+      #background-options {
+        position: absolute;
+        top: 0;
+        left: 0;
+        margin: 10px;
+      }
+
+      #font-options {
+        position: absolute;
+        top: 0;
+        right: 0;
+        margin: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="background-options">
+      <label><input type="radio" name="background" value="white" checked> White</label>
+      <label><input type="radio" name="background" value="lightgray"> Light Gray</label>
+      <label><input type="radio" name="background" value="gray"> Gray</label>
+      <label><input type="radio" name="background" value="darkgray"> Dark Gray</label>
+      <label><input type="radio" name="background" value="black"> Black</label>
+    </div>
+
+    <div id="font-options">
+      <label><input type="radio" name="font" value="Arial" checked> Arial</label>
+      <label><input type="radio" name="font" value="Verdana"> Verdana</label>
+      <label><input type="radio" name="font" value="Times New Roman"> Times New Roman</label>
+      <label><input type="radio" name="font" value="Georgia"> Georgia</label>
+      <label><input type="radio" name="font" value="Tahoma"> Tahoma</label>
+    </div>
+
+    <div id="clock"></div>
+
+    <script>
+      function updateClock() {
+        var now = new Date();
+        var hour = now.getHours();
+        var minute = now.getMinutes();
+        var second = now.getSeconds();
+        hour = hour % 12;
+        hour = hour ? hour : 12;
+        minute = checkTime(minute);
+        second = checkTime(second);
+        document.getElementById('clock').innerHTML = hour + ':' + minute + ':' + second;
+        setTimeout(updateClock, 1000);
+      }
+
+      function checkTime(i) {
+        if (i < 10) {
+          i = "0" + i;
+        }
+        return i;
+      }
+
+      function setBackground() {
+        var backgroundOptions = document.getElementsByName('background');
+        for (var i = 0; i < backgroundOptions.length; i++) {
+          if (backgroundOptions[i].checked) {
+            document.body.style.backgroundColor = backgroundOptions[i].value;
+            break;
+          }
+        }
+      }
+
+      function setFont() {
+        var fontOptions = document.getElementsByName('font');
+        for (var i = 0; i < fontOptions.length; i++) {
+          if (fontOptions[i].checked) {
+            document.getElementById('clock').style.fontFamily = fontOptions[i].value;
+            break;
+          }
+        }
+      }
+
+      setBackground();
+      setFont();
+      updateClock();
+
+      document.getElementsByName('background').forEach(function(radio) {
+        radio.addEventListener('change', setBackground);
+      });
+
+      document.getElementsByName('font').forEach(function(radio) {
+        radio.addEventListener('change', setFont);
+      });
+    </script>
+  </body>
+</html>
